@@ -48,6 +48,8 @@ review10 = Review(content="Enjoyable.", star_rating=8, restaurant=restaurant10, 
 
 
 # Add data to the session and commit it to the database
-session.add_all([restaurant1, restaurant2,restaurant1, restaurant2,restaurant1, restaurant2,restaurant1, restaurant2,restaurant1, restaurant2, customer1, customer2, review1, review2])
+session.add_all([restaurant1, restaurant2,restaurant3, restaurant4,restaurant5, restaurant6,restaurant7, restaurant8,restaurant9, restaurant10, customer1, customer2,customer3, customer4,
+                 customer5, customer6,customer7, customer8,customer9, customer10, review1, review2,review3, review4,review5, review6,review7, review8,review9, review10,
+                 ])
 session.commit()
 
