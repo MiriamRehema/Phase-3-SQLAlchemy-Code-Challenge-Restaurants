@@ -7,6 +7,13 @@ engine = create_engine('sqlite:///restaurant_reviews.db')
 #The base
 Base = declarative_base()
 
+# Create the tables in the database
+Base.metadata.create_all(engine)
+
+# Create a session to interact with the database
+Session = sessionmaker(bind=engine)
+session = Session()
+
 # Define the Restaurant, Customer, and Review models
 class Restaurant(Base):
     __tablename__ = 'restaurants'
@@ -17,6 +24,17 @@ class Restaurant(Base):
 
      #To have a relationship with review we should
     reviews = relationship('Review', back_populates='restaurant')
+
+    def restaurants(self):
+        # Retrieve the list of restaurants associated with this customer
+        return [review.restaurant for review in self.reviews]
+    
+    #using the classsmethod
+    @classmethod
+    def fanciest(cls):
+        # Query the database to find the fanciest restaurant
+        fanciest_restaurant = session.query(cls).order_by(cls.price.desc()).first()
+        return fanciest_restaurant
 
 class Customer(Base):
     __tablename__ = 'customers'
@@ -44,9 +62,11 @@ class Review(Base):
     restaurant = relationship('Restaurant', back_populates='reviews')
     customer = relationship('Customer', back_populates='reviews')
 
-# Create the tables in the database
-Base.metadata.create_all(engine)
+    def customer(self):
+        # Return the Customer instance associated with this review
+        return self.customer
+    
+    def restaurant(self):
+        # Return the Restaurant instance associated with this review
+        return self.restaurant
 
-# Create a session to interact with the database
-Session = sessionmaker(bind=engine)
-session = Session()
